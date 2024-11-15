@@ -1,0 +1,1 @@
+PyWebRequests simplifies web scraping and requests in Python. It provides easy-to-use functions for fetching HTML, finding web elements using XPath, managing proxies, and generating random user agents.
