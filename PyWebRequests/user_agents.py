@@ -1,5 +1,4 @@
 import re
-import time
 import random
 import typing
 from PyWebRequests.data import (
@@ -121,7 +120,7 @@ def generate_safari_ua(engine_ua: typing.Optional[str] = None) -> str:
     from a given engine user agent string.
 
     Args:
-        engine_ua (Optional[str]): An optional engine user agent string, from which to extract AppleWebKit version.
+        engine_ua (typing.Optional[str]): An optional engine user agent string, from which to extract AppleWebKit version.
 
     Returns:
         str: Safari browser user agent string.
@@ -169,9 +168,9 @@ def generate_random_browser_ua(
     It can also generate a user agent string based on the specified engine.
 
     Args:
-        browser_to_generate (Optional[supported_ua_browsers]): The browser for which to generate the user agent.
-        engine (Optional[supported_ua_engines]): The engine on which to base the browser choice.
-        engine_ua (Optional[str]): An optional engine user agent string, for Safari version generation.
+        browser_to_generate (typing.Optional[supported_ua_browsers]): The browser for which to generate the user agent.
+        engine (typing.Optional[supported_ua_engines]): The engine on which to base the browser choice.
+        engine_ua (typing.Optional[str]): An optional engine user agent string, for Safari version generation.
 
     Returns:
         tuple[str, str]: A tuple containing the generated user agent string and the browser used.
@@ -272,11 +271,11 @@ def generate_random_engine_ua(
 	Generates a random engine user agent string based on the given engine and platform.
 
     This function generates a user agent string for a specified engine, or a random engine if none is specified.
-	It can also generate a user agent string based on the specified platform.
+    It can also generate a user agent string based on the specified platform.
 
     Args:
-        engine_to_generate (Optional[supported_ua_engines]): The engine for which to generate the user agent.
-        platform (Optional[supported_ua_platforms]): The platform on which to base the engine choice.
+        engine_to_generate (typing.Optional[supported_ua_engines]): The engine for which to generate the user agent.
+        platform (typing.Optional[supported_ua_platforms]): The platform on which to base the engine choice.
 
     Returns:
         tuple[str, str]: A tuple containing the generated user agent string and the engine used.
@@ -380,7 +379,7 @@ def generate_random_os_ua(os_to_generate: typing.Optional[supported_ua_platforms
 	This function generates a user agent string for a specified OS, or a random OS if none is specified.
 
     Args:
-        os_to_generate (Optional[supported_ua_platforms]): The OS for which to generate the user agent.
+        os_to_generate (typing.Optional[supported_ua_platforms]): The OS for which to generate the user agent.
 
     Returns:
         tuple[str, str]: A tuple containing the generated user agent string and the OS used.

@@ -1223,7 +1223,7 @@ class UserAgentEngine:
 
     Attributes:
         apple_webkit_versions (list[range]): A list of ranges of numbers for AppleWebKit versions.
-        gecko_versions (list[range | list[range]]): A list of ranges of numbers for Gecko versions.
+        gecko_versions (list[typing.Union[range, list[range]]]): A list of ranges of numbers for Gecko versions.
     """
 	apple_webkit_versions = [range(500, 615), range(0, 36), range(1, 10)]
 	gecko_versions = [
