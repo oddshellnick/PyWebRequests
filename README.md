@@ -7,7 +7,7 @@ PyWebRequests is a lightweight Python library designed to simplify common web sc
 * **Easy HTML Parsing:** Quickly parse HTML content using `get_html`, which returns an `lxml` etree object ready for XPath queries.
 * **Simplified Element Finding:** Locate specific web elements using `find_web_element` and `find_web_elements`, abstracting away the complexities of XPath handling.
 * **Integrated Proxy Support:** Seamlessly integrate proxies into your requests using the `proxies` parameter in `get_html` and `get_json`.
-* **Dynamic User-Agent Generation:** Easily obtain random user agents using `get_random_user_agent` to avoid being blocked by websites.
+* **Dynamic User-Agent Generation:** Easily obtain random user agents using `get_random_user_agent` to avoid being blocked by websites. This function generates `~5 * 10^777` unique user-agents.
 * **Free Proxy List Retrieval:** Fetch a list of free proxies with `get_free_proxies`, filtering by protocol if desired.
 
 ## Installation:
