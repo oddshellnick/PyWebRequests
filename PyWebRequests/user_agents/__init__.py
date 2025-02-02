@@ -15,6 +15,20 @@ from PyWebRequests.user_agents.data_types import (
 
 
 def create_browser_version_from_parts(parts: list[typing.Union[int, range]], drop_last_zero: bool = False) -> str:
+	"""
+	Creates a browser version string from a list of parts.
+
+    This function generates a browser version string by combining a list of integer or range parts.
+    If a part is a range, it selects a random value within that range.
+    It can optionally drop the last part if it is 0 with a certain probability.
+
+    Args:
+        parts (list[typing.Union[int, range]]): List of parts for the version string.
+        drop_last_zero (bool): If True, last part can be dropped if it's 0.
+
+    Returns:
+        str: The generated browser version string.
+	"""
 	browser_version = [
 		str(part)
 		if isinstance(part, int)
