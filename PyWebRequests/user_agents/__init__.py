@@ -1,13 +1,13 @@
 import re
 import random
 import typing
-from PyWebRequests.data import (
+from PyWebRequests.user_agents.data import (
 	UserAgentBrowser,
 	UserAgentEngine,
 	UserAgentOS,
 	UserAgentSupportedParts
 )
-from PyWebRequests.data_types import (
+from PyWebRequests.user_agents.data_types import (
 	supported_ua_browsers,
 	supported_ua_engines,
 	supported_ua_platforms
@@ -21,9 +21,7 @@ def generate_yandex_ua() -> str:
 	Returns:
 		str: Yandex browser user agent string.
 	"""
-	yandex_browser_version = random.choice(UserAgentBrowser.yandex_versions)
-	
-	return f"YaBrowser/{yandex_browser_version}"
+	return f"YaBrowser/{create_browser_version_from_parts(UserAgentBrowser.yandex_versions)}"
 
 
 def generate_edge_ua() -> str:
@@ -33,9 +31,7 @@ def generate_edge_ua() -> str:
 	Returns:
 		str: Edge browser user agent string.
 	"""
-	edge_version = random.choice(UserAgentBrowser.edge_versions)
-	
-	return f"Edg/{edge_version}"
+	return f"Edg/{create_browser_version_from_parts(UserAgentBrowser.edge_versions)}"
 
 
 def generate_opera_ua() -> str:
@@ -45,9 +41,7 @@ def generate_opera_ua() -> str:
 	Returns:
 		str: Opera browser user agent string.
 	"""
-	opera_version = random.choice(UserAgentBrowser.opera_versions)
-	
-	return f"Opera/{opera_version}"
+	return f"Opera/{create_browser_version_from_parts(UserAgentBrowser.opera_versions)}"
 
 
 def generate_firefox_ua() -> str:
@@ -57,9 +51,7 @@ def generate_firefox_ua() -> str:
 	Returns:
 		str: Firefox browser user agent string.
 	"""
-	firefox_version = random.choice(UserAgentBrowser.firefox_versions)
-	
-	return f"Firefox/{firefox_version}"
+	return f"Firefox/{create_browser_version_from_parts(UserAgentBrowser.firefox_versions, True)}"
 
 
 def add_safari_version(
@@ -137,7 +129,7 @@ def generate_safari_ua(engine_ua: typing.Optional[str] = None) -> str:
 		safari_version = ".".join(version_parts)
 	else:
 		webkit_version: list[str] = re.search(r"AppleWebKit/(\d+(?:\.\d+)*)", engine_ua).group(1).split(".")
-		webkit_version = add_safari_version(webkit_version, UserAgentEngine.apple_webkit_versions, 0, True)
+		webkit_version = add_safari_version(webkit_version, UserAgentBrowser.safari_versions, 0, True)
 	
 		safari_version = ".".join(webkit_version)
 	
@@ -151,9 +143,7 @@ def generate_chrome_ua() -> str:
 	Returns:
 		str: Chrome browser user agent string.
 	"""
-	chrome_version = random.choice(UserAgentBrowser.chrome_versions)
-	
-	return f"Chrome/{chrome_version}"
+	return f"Chrome/{create_browser_version_from_parts(UserAgentBrowser.chrome_versions)}"
 
 
 def generate_random_browser_ua(
@@ -193,7 +183,7 @@ def generate_random_browser_ua(
 	
 	if browser_to_generate == "Chrome":
 		chrome_ua = generate_chrome_ua()
-		safari_ua = generate_safari_ua(engine_ua) if random.choice([True, False]) else ""
+		safari_ua = generate_safari_ua(engine_ua)
 	
 		return " ".join(list(filter(None, [chrome_ua, safari_ua]))), browser_to_generate
 	elif browser_to_generate == "Firefox":
@@ -203,19 +193,19 @@ def generate_random_browser_ua(
 	elif browser_to_generate == "Opera":
 		chrome_ua = generate_chrome_ua()
 		opera_ua = generate_opera_ua()
-		safari_ua = generate_safari_ua(engine_ua) if random.choice([True, False]) else ""
+		safari_ua = generate_safari_ua(engine_ua)
 	
 		return " ".join(list(filter(None, [chrome_ua, opera_ua, safari_ua]))), browser_to_generate
 	elif browser_to_generate == "Edge":
 		chrome_ua = generate_chrome_ua()
 		edge_ua = generate_edge_ua()
-		safari_ua = generate_safari_ua(engine_ua) if random.choice([True, False]) else ""
+		safari_ua = generate_safari_ua(engine_ua)
 	
 		return " ".join(list(filter(None, [chrome_ua, edge_ua, safari_ua]))), browser_to_generate
 	elif browser_to_generate == "Yandex":
 		chrome_ua = generate_chrome_ua()
 		yandex_ua = generate_yandex_ua()
-		safari_ua = generate_safari_ua(engine_ua) if random.choice([True, False]) else ""
+		safari_ua = generate_safari_ua(engine_ua)
 	
 		return " ".join(list(filter(None, [chrome_ua, yandex_ua, safari_ua]))), browser_to_generate
 	else:
@@ -252,13 +242,7 @@ def generate_random_apple_webkit_ua() -> str:
 	Returns:
 		str: AppleWebKit engine user agent string.
 	"""
-	version_parts = [str(random.choice(UserAgentEngine.apple_webkit_versions[0]))]
-	
-	if random.choice([True, False]):
-		version_parts.append(str(random.choice(UserAgentEngine.apple_webkit_versions[1])))
-	
-		if random.choice([True, False]):
-			version_parts.append(str(random.choice(UserAgentEngine.apple_webkit_versions[2])))
+	version_parts = [str(random.choice(part)) for part in UserAgentEngine.apple_webkit_versions]
 	
 	return f"AppleWebKit/{'.'.join(version_parts)} (KHTML, like Gecko)"
 
@@ -430,3 +414,17 @@ def generate_random_user_agent() -> str:
 	browser_ua, used_browser = generate_random_browser_ua(engine=used_engine, engine_ua=engine_ua)
 	
 	return f"{mozilla_ua} ({os_ua}) {engine_ua} {browser_ua}"
+
+
+def create_browser_version_from_parts(parts: list[typing.Union[int, range]], drop_last_zero: bool = False) -> str:
+	browser_version = [
+		str(part)
+		if isinstance(part, int)
+		else str(random.choice(part))
+		for part in parts
+	]
+	
+	if drop_last_zero and browser_version[-1] == 0 and random.choice([True, False]):
+		browser_version.pop(-1)
+	
+	return '.'.join(browser_version)
