@@ -14,6 +14,20 @@ from PyWebRequests.user_agents.data_types import (
 )
 
 
+def create_browser_version_from_parts(parts: list[typing.Union[int, range]], drop_last_zero: bool = False) -> str:
+	browser_version = [
+		str(part)
+		if isinstance(part, int)
+		else str(random.choice(part))
+		for part in parts
+	]
+	
+	if drop_last_zero and browser_version[-1] == 0 and random.choice([True, False]):
+		browser_version.pop(-1)
+	
+	return '.'.join(browser_version)
+
+
 def generate_yandex_ua() -> str:
 	"""
 	Generates a Yandex browser user agent string.
@@ -21,7 +35,8 @@ def generate_yandex_ua() -> str:
 	Returns:
 		str: Yandex browser user agent string.
 	"""
-	return f"YaBrowser/{create_browser_version_from_parts(UserAgentBrowser.yandex_versions)}"
+	yandex_version = create_browser_version_from_parts(UserAgentBrowser.yandex_versions)
+	return f"YaBrowser/{yandex_version}"
 
 
 def generate_edge_ua() -> str:
@@ -31,7 +46,8 @@ def generate_edge_ua() -> str:
 	Returns:
 		str: Edge browser user agent string.
 	"""
-	return f"Edg/{create_browser_version_from_parts(UserAgentBrowser.edge_versions)}"
+	edge_version = create_browser_version_from_parts(UserAgentBrowser.edge_versions)
+	return f"Edg/{edge_version}"
 
 
 def generate_opera_ua() -> str:
@@ -41,7 +57,8 @@ def generate_opera_ua() -> str:
 	Returns:
 		str: Opera browser user agent string.
 	"""
-	return f"Opera/{create_browser_version_from_parts(UserAgentBrowser.opera_versions)}"
+	opera_version = create_browser_version_from_parts(UserAgentBrowser.opera_versions)
+	return f"Opera/{opera_version}"
 
 
 def generate_firefox_ua() -> str:
@@ -51,7 +68,8 @@ def generate_firefox_ua() -> str:
 	Returns:
 		str: Firefox browser user agent string.
 	"""
-	return f"Firefox/{create_browser_version_from_parts(UserAgentBrowser.firefox_versions, True)}"
+	firefox_version = create_browser_version_from_parts(UserAgentBrowser.firefox_versions, True)
+	return f"Firefox/{firefox_version}"
 
 
 def add_safari_version(
@@ -143,7 +161,8 @@ def generate_chrome_ua() -> str:
 	Returns:
 		str: Chrome browser user agent string.
 	"""
-	return f"Chrome/{create_browser_version_from_parts(UserAgentBrowser.chrome_versions)}"
+	chrome_version = create_browser_version_from_parts(UserAgentBrowser.chrome_versions)
+	return f"Chrome/{chrome_version}"
 
 
 def generate_random_browser_ua(
@@ -414,17 +433,3 @@ def generate_random_user_agent() -> str:
 	browser_ua, used_browser = generate_random_browser_ua(engine=used_engine, engine_ua=engine_ua)
 	
 	return f"{mozilla_ua} ({os_ua}) {engine_ua} {browser_ua}"
-
-
-def create_browser_version_from_parts(parts: list[typing.Union[int, range]], drop_last_zero: bool = False) -> str:
-	browser_version = [
-		str(part)
-		if isinstance(part, int)
-		else str(random.choice(part))
-		for part in parts
-	]
-	
-	if drop_last_zero and browser_version[-1] == 0 and random.choice([True, False]):
-		browser_version.pop(-1)
-	
-	return '.'.join(browser_version)
